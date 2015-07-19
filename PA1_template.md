@@ -29,7 +29,8 @@ The average number of steps taken in each 5-minute interval across all the days 
 
 
 ```r
-step_average <- tapply(actData$steps, actData$interval, mean, na.rm = TRUE, simplify = TRUE)
+step_average  <- tapply(actData$steps, actData$interval, sum, na.rm = TRUE, simplify = TRUE)/
+  length(levels(actData$date))
 plot(x = levels(as.factor(actData$interval)), y = step_average, type = "l", xlab = "time",
      ylab = "number of steps", main = "Average number of steps")
 ```
@@ -53,7 +54,6 @@ Fill in all of the missing values in the dataset using the mean of the interval
 
 
 ```r
-actDataFinal <- actData
 for (i in 1:length(actData$steps)) {
     if (is.na(actData$steps[i])) {
         for (j in 1:length(step_average)) {
@@ -69,17 +69,19 @@ Plot the total number of steps taken each day for the complete dataset using a h
 
 ```r
 comp_step_average <- tapply(comp_data$steps, comp_data$date, sum, na.rm = TRUE, simplify = TRUE)
+
 hist(comp_step_average, xlab='Total steps per day', main='Histogram of Total Number of Steps each day')
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
 
 ```r
-stepsCompMean<-mean(comp_step_average)
-stepsCompMedian<-median(comp_step_average)
+stepsCompMean<-as.integer(mean(comp_step_average))
+
+stepsCompMedian<-as.integer(median(comp_step_average))
 ```
-The mean of total number of steps per day is 1.0766189\times 10^{4}.  
-The median of total number of steps per day is 1.0766189\times 10^{4}.
+The mean of total number of steps per day is 10581.  
+The median of total number of steps per day is 10395.
 
 There is a slight difference in the mean value but The median value have no difference.From the histogram it is evident that the number of steps per day increases a little bit when the NA values are filled in 
 
